@@ -18,13 +18,13 @@ Stepper S1 = Stepper(48,8,10,9,11);
   int lastHist=0;
   int redoPossib=0;
   int undoPossib=0;
-  
+
 int posxaddr=0 ;
-int posyaddr=4 ; 
+int posyaddr=4 ;
 
 void setup(){
   posx=  EEPROM.read(posxaddr);
-  posy=  EEPROM.read(posyaddr); 
+  posy=  EEPROM.read(posyaddr);
   pinMode(6,OUTPUT);
   pinMode(7,OUTPUT);
 digitalWrite(6,1);
@@ -38,10 +38,10 @@ S1 .setSpeed(400);
 
 
 void loop(){
- 
- move(10,20);
- 
-  
+
+ //move(10,20);
+
+
 /*for ( int i = 0 ; i<480 ; i++){
   S0 .setSpeed(120+i);
   S0.step(1);
@@ -59,28 +59,28 @@ delay(1000);
 }
 
 void move(float x , float y){
- 
+
 int stepx = abs(x)+0.5;
 int stepy = abs(y)+0.5;
  int dx=1;
-    if(x<0) dx=-1; 
+    if(x<0) dx=-1;
  int dy=1;
-    if(y<0) dy=-1; 
-  
+    if(y<0) dy=-1;
+
   for(int i = 0 ; i<stepx*stepy*48 ; i++) {
    if(i%stepx == 0 ) S1.step(dy);
-   if(i%stepy == 0 ) S0.step(dx);     
-  } 
+   if(i%stepy == 0 ) S0.step(dx);
+  }
   posx+=x*48;
   posy+=y*48;
-  
+
   saveHist();
 }
 
 void moveTo(float x, float y){
-  
+
  move(posx/48 - x, posy/48 - y);
-  
+
 }
 
 
@@ -88,8 +88,16 @@ void up(float y){
  move( 0 , y);
 }
 
+void upTo(float y){
+ up( y-posy);
+}
+
 void down(float y){
   move(0 , -y);
+}
+
+void downTo(float y){//same as upTo
+ up( y-posy);
 }
 
 void saveHist(){
@@ -106,13 +114,13 @@ void undo(){
   redoPossib++;
  moveTo(history[0][lastHist] , history[1][lastHist]);
   undoPossib--;
-  } 
+  }
 }
 
 void redo(){
   if(redoPossib>0){
  lastHist++;
-  redoPossib--; 
+  redoPossib--;
  moveTo(history[0][lastHist] , history[1][lastHist]);
  undoPossib++;
   }
@@ -124,7 +132,7 @@ void savepos(){
  EEPROM.write(posxaddr, x%256);
  x>>=8;
  EEPROM.write(posxaddr+1, x%256);
- 
+
   int y = posy;
  EEPROM.write(posyaddr, y%256);
  y>>=8;
@@ -134,10 +142,10 @@ void savepos(){
 
 void loadpos(){
  posx = EEPROM.read(posxaddr+1);
-posx<<=8; 
+posx<<=8;
   posx +=EEPROM.read(posxaddr);
 
   posy = EEPROM.read(posyaddr+1);
-posy<<=8; 
+posy<<=8;
   posy +=EEPROM.read(posyaddr);
 }
