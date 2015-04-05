@@ -78,12 +78,23 @@ delay(1000);
 
 int chOp(){
 	int number=0;
+	
+	Serial.println("1-sterowanie x/y/z  2-cofnij  3-cofnij cofniecie");
+ switch (Serial.read()){
+      case '1':
+        number=1;
+        break;
+      case '2':
+        number=2;
+        break;
+      case '3':
+        number=3;
+        break;
+      default:
+        Serial.println("Blad");
+        break;
+    }
 
-	if (Serial.available()){
-    HEX action = Serial.read();
-	if(action == 31) number=1;
-	if(action == 32) number=2;
-	if(action == 33) number=3;
 
 	return number;												////// do wyboru sposób wybierania (przez stany na pinach?)
 }
