@@ -1,190 +1,160 @@
 #include <EEPROM.h>
 #include <Stepper.h>
 
-//Stepper S1= Stepper(48,0,3,2,1);  //w lewo kreci
-//Stepper S1= Stepper(48,0,3,1,2);  //w prawo kreci
-
-//Stepper S1 = Stepper(48,0,1,2,3);  // Y silnik  pierwotnie
-//Stepper S2 = Stepper(48,0,3,1,2);  // X silnik  pierwotnie
-
 Stepper S0 = Stepper(48,0,1,2,3);
 Stepper S1 = Stepper(48,4,5,6,7);
 Stepper S2 = Stepper(48,8,9,10,11);      //// piny do wpiny
 
- int posx=0;
- int posy=0;
- int posz=0;
- int xRange=100;						//maksymalne zasiêgi ramienia
- int yRange=100;
- int zRange=100;
-  int history[3][100];
-  int lastHist=0;
-  int redoPossib=0;
-  int undoPossib=0;
-  bool historyBrowsing=false;
+int posX=0;
+int posY=0;
+int posZ=0;
+int xRange=100;						//maksymalne zasiêgi ramienia
+int yRange=100;
+int zRange=100;
+int history[3][100];
+int lastHist=0;
+int redoPossib=0;
+int undoPossib=0;
+bool historyBrowsing=false;
 
-int posxaddr=0 ;
-int posyaddr=4 ;
-int poszaddr=8 ;
+int posXaddr=0 ;
+int posYaddr=4 ;
+int posZaddr=8 ;
 
 
 void setup(){
-  posx = 0;  // EEPROM.read(posxaddr);
-  posy = 0;  //EEPROM.read(posyaddr);
-  posz = 0; // EEPROM.read(poszaddr);
-  pinMode(12,OUTPUT);
-  pinMode(13,OUTPUT);
- S0 .setSpeed(400);
-S1 .setSpeed(400);
-S2 .setSpeed(400);
-Serial.begin(9600);
+	posX = 0;  // EEPROM.read(posXaddr);
+	posY = 0;  //EEPROM.read(posYaddr);
+	posZ = 0; // EEPROM.read(posZaddr);
+	pinMode(12,OUTPUT);
+	pinMode(13,OUTPUT);
+	S0 .setSpeed(400);
+	S1 .setSpeed(400);
+	S2 .setSpeed(400);
+	Serial.begin(9600);
 }
 
 
 void loop(){                                             //// Menu.
-int x,y,z;
-int chose = chOp();
+	int x,y,z;
 
-do{
+	int chose = Serial.read();
+
 	switch(chose){
-	
-	if(chose==1 || chose==2 || chose==3){
-		if(chose==1)x=Serial.read();
-		if(chose!=3)y=Serial.read();
-		if(chose!=2)z=Serial.read();
-	}
+		case(1):
+			x=Serial.read();
+			y=Serial.read();
+			z=Serial.read();
 
-	case(1):
-		moveTo(x,y,z);
-	break;
-
-	case(2):
-		hight(z);
-	break;
-
-	case(3):
-		orient(y);
-	break;
-	
-	case(4):
-		undo();
-	break;
-	
-	case(5):
-		redo();
-	break;
-		}								
-}while(chose<0 || chose>3);
-
-delay(1000);
-
-}
-
-
-int chOp(){
-	int number=0;
-
-	switch (Serial.read()){
-      case '1':
-        number=1;
-        break;
-      case '2':
-        number=2;
-        break;
-      case '3':
-        number=3;
+			move(x,y,z);
 		break;
-	  case '4':
-        number=4;
-        break;
-      case '5':
-        number=5;
-        break;      
-      default:
-		  break;
-	return number;
+
+		case(2):
+			x=Serial.read();
+			y=Serial.read();
+			z=Serial.read();
+
+			moveTo(x,y,z);
+		break;
+
+		case(3):
+			y=Serial.read();
+			sides(y);
+		break;
+		case(4):
+			y=Serial.read();
+			sidesTo(y);
+		break;
+
+		case(5):
+			z=Serial.read();
+			vertical(z);
+		break;
+		case(6):
+			z=Serial.read();
+			verticalTo(z);
+		break;
+
+		case(7):
+			undo();
+		break;
+
+		case(8):
+			redo();
+		break;
+	}
+	delay(1000);
 }
 
-/*
 
+void move(int x , int y, int z){
 
-1. Wyznaczamy stosunek kroków poszczególnych silników np 1 do 1.5 do 5 (dla np liczb kroków 4, 6, 20).
-2. W pêtli mno¿yæ i razy stosunek np k(i) = i*ratio1
-3. Wykonaæ floor(k(i)) - floor(k(i-1)) kroków (czyli tyle, ile pe³nych liczb ca³kowitych minê³o)
+	int stepx = abs(x)+0.5;
+	int stepy = abs(y)+0.5;
+	int stepz = abs(z)+0.5;
 
-Optymalizacja : k(i) =k(i-1)+ratio1
-Wyznaczaæ stosunek, tak, ¿eby najwiêksza iloœæ kroków mia³a 1. Np 0.2 do 0.25 do 1 (przyk³adem z pkt 1)
+	int maxStep;
+	maxStep = max(stepx,max(stepy,stepz));
 
-Co myœlicie?
+	float ratioX =stepx/maxStep;
+	float ratioY =stepy/maxStep;
+	float ratioZ =stepz/maxStep;
 
+	int dx=x<0?-1:1;
+	int dy=y<0?-1:1;
+	int dz=z<0?-1:1;
 
-*/
-
-void move(float x , float y, float z){
-
-int stepx = (abs(x)+0.5)*48;
-int stepy = (abs(y)+0.5)*48;
-int stepz = (abs(z)+0.5)*48;
-
-int maxStep;
-maxStep = max(stepx,max(stepy,stepz));
-
-float ratioX =stepx/maxStep;
-float ratioY =stepy/maxStep;
-float ratioZ =stepz/maxStep;
-
-int dx=x<0?-1:1;
-int dy=y<0?-1:1;
-int dz=z<0?-1:1;
-
-float kx=0,ky=0,kz=0;
-for (int i = 0 ; i < maxStep ; i++){
-	kx+=ratioX;
-	if(kx>=1){
-		kx--;
-		S0.step(dx);
+	float kx=0,ky=0,kz=0;
+	for (int i = 0 ; i < maxStep ; i++){
+		kx+=ratioX;
+		if(kx>=1){
+			kx--;
+			S0.step(dx);
+		}
+		ky+=ratioY;
+		if(ky>=1){
+			ky--;
+			S1.step(dy);
+		}
+		kz+=ratioZ;
+		if(kz>=1){
+			kz--;
+			S2.step(dz);
+		}
 	}
-	ky+=ratioY;
-	if(ky>=1){
-		ky--;
-		S1.step(dy);
-	}
-	kz+=ratioZ;
-	if(kz>=1){
-		kz--;
-		S2.step(dz);
-	}
-}
-saveHist();
+	posX+=x;
+	posY+=y;
+	posZ+=z;
+	saveHist();
 }
 
 void moveTo(float x, float y, float z){
- move(posx/48 - x, posy/48 - y , posz/48 - z);
+ move(posX/48 - x, posY/48 - y , posZ/48 - z);
 }
 
-void hight(float z){
+void vertical(float z){
  move( 0 , 0 , z);
 }
 
-void hightTo(float z){
- hight( z-posz);
+void verticalTo(float z){
+ vertical( z-posZ);
 }
 
-void orient(float y){
+void sides(float y){
  move( 0 , y , 0);
 }
 
-void orientTo(float y){
- orient( y-posy);
+void sidesTo(float y){
+ sides( y-posY);
 }
 
 
 
 void saveHist(){
   if(undoPossib<99) undoPossib++;
- history[0][lastHist] = posx;
- history[1][lastHist] = posy;
- history[2][lastHist] = posz;
+ history[0][lastHist] = posX;
+ history[1][lastHist] = posY;
+ history[2][lastHist] = posZ;
   lastHist= (lastHist+1)%100;
   if(historyBrowsing==false)redoPossib=0;
 }
@@ -195,7 +165,7 @@ void undo(){
   redoPossib++;
 historyBrowsing=true;
  moveTo(history[0][lastHist] , history[1][lastHist] , history[2][lastHist]);
-historyBrowsing=false; 
+historyBrowsing=false;
  undoPossib-=2;
   }
 }
@@ -215,34 +185,34 @@ historyBrowsing=false;
 /*
 
 void savepos(){
-  int x = posx;
- EEPROM.write(posxaddr, x%256);
+  int x = posX;
+ EEPROM.write(posXaddr, x%256);
  x>>=8;
- EEPROM.write(posxaddr+1, x%256);
+ EEPROM.write(posXaddr+1, x%256);
 
-  int y = posy;
- EEPROM.write(posyaddr, y%256);
+  int y = posY;
+ EEPROM.write(posYaddr, y%256);
  y>>=8;
- EEPROM.write(posyaddr+1, y%256);
+ EEPROM.write(posYaddr+1, y%256);
 
-  int z = posz;
- EEPROM.write(poszaddr, z%256);
+  int z = posZ;
+ EEPROM.write(posZaddr, z%256);
  z>>=8;
- EEPROM.write(poszaddr+1, z%256);
+ EEPROM.write(posZaddr+1, z%256);
 }
 
 void loadpos(){
- posx = EEPROM.read(posxaddr+1);
-posx<<=8;
-  posx +=EEPROM.read(posxaddr);
+ posX = EEPROM.read(posXaddr+1);
+posX<<=8;
+  posX +=EEPROM.read(posXaddr);
 
-  posy = EEPROM.read(posyaddr+1);
-posy<<=8;
-  posy +=EEPROM.read(posyaddr);
+  posY = EEPROM.read(posYaddr+1);
+posY<<=8;
+  posY +=EEPROM.read(posYaddr);
 
-   posz = EEPROM.read(poszaddr+1);
-posz<<=8;
-  posz +=EEPROM.read(poszaddr);
+   posZ = EEPROM.read(posZaddr+1);
+posZ<<=8;
+  posZ +=EEPROM.read(posZaddr);
 }
 */
 
