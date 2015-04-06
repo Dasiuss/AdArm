@@ -16,6 +16,7 @@ int lastHist=0;
 int redoPossib=0;
 int undoPossib=0;
 bool historyBrowsing=false;
+int outV=0;
 
 int posXaddr=0 ;
 int posYaddr=4 ;
@@ -38,40 +39,40 @@ void setup(){
 void loop(){                                             //// Menu.
 	int x,y,z;
 
-	int chose = Serial.read();
+	int chose = sRead();
 
 	switch(chose){
 		case(1):
-			x=Serial.read();
-			y=Serial.read();
-			z=Serial.read();
+			x=sRead();
+			y=sRead();
+			z=sRead();
 
 			move(x,y,z);
 		break;
 
 		case(2):
-			x=Serial.read();
-			y=Serial.read();
-			z=Serial.read();
+			x=sRead();
+			y=sRead();
+			z=sRead();
 
 			moveTo(x,y,z);
 		break;
 
 		case(3):
-			y=Serial.read();
+			y=sRead();
 			sides(y);
 		break;
 		case(4):
-			y=Serial.read();
+			y=sRead();
 			sidesTo(y);
 		break;
 
 		case(5):
-			z=Serial.read();
+			z=sRead();
 			vertical(z);
 		break;
 		case(6):
-			z=Serial.read();
+			z=sRead();
 			verticalTo(z);
 		break;
 
@@ -82,8 +83,37 @@ void loop(){                                             //// Menu.
 		case(8):
 			redo();
 		break;
+
+		case(9):
+			setV(v);
+		break;
+
+		case(10):
+			vOn();
+		break;
+
+		case(11):
+			vOff();
+		break;
+
+		case(12):
+			plugIn();
+		break;
+
+		case(13):
+			plugOut();
+		break;
+
+
 	}
 	delay(1000);
+}
+
+int sRead(){
+	int i = Serial.read();
+	i<<=8;
+	i += Serial.read();
+	return i;
 }
 
 
@@ -180,6 +210,30 @@ historyBrowsing=false;
   undoPossib++;
   }
 }
+
+
+void setV(int v){
+outV=v;
+}
+
+
+void vOn(){
+analogWrite(13,outV);
+}
+
+void vOff(){
+analogWrite(13,0);
+}
+
+void plugIn(){
+digitalWrite(12,1);
+}
+
+void plugOut(){
+digitalWrite(12,0);
+}
+
+
 
 
 /*
