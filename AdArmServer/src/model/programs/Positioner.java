@@ -13,10 +13,17 @@ public class Positioner extends Program {
 
 	@Override
 	protected void init() {
-		enqueue(C0.move(40));
-		enqueue(C1.move(0));
-		enqueue(C2.move(90));
-		// enqueue(laser.setIntensity(20));
+		// startPositionFast();
+
+		enqueue(S2.move(45));
+		enqueue(S1.move(120));
+		enqueue(S2.move(5));
+		enqueue(S1.move(180));
+
+		enqueue(S1.move(120));
+		enqueue(S2.move(40));
+		enqueue(S1.move(30));
+		enqueue(S2.move(90));
 
 	}
 }
