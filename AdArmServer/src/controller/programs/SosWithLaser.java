@@ -1,16 +1,18 @@
 package controller.programs;
 
+import controller.Program;
 import model.elements.Robot;
 
-public class SosWithLaser {
+public class SosWithLaser extends Program {
 
 	private Robot robot = new Robot();
 
 	public static void main(String[] args) {
-		new SosWithLaser();
+		new SosWithLaser().start();
 	}
 
-	public SosWithLaser() {
+	@Override
+	protected void run() {
 		robot.laser.on();
 		robot.system.wait(100);
 		robot.laser.off();

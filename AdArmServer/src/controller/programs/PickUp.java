@@ -1,17 +1,19 @@
 package controller.programs;
 
+import controller.Program;
 import model.ProgramsUtils;
 import model.elements.Robot;
 
-public class PickUp {
+public class PickUp extends Program {
 
 	private Robot robot = new Robot();
 
 	public static void main(String[] args) {
-		new PickUp();
+		new PickUp().start();
 	}
 
-	public PickUp() {
+	@Override
+	protected void run() {
 		robot.system.setStepDelay(10);
 
 		robot.C0.move(180);

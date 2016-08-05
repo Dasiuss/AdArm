@@ -1,17 +1,19 @@
 package controller.programs;
 
+import controller.Program;
 import model.elements.Robot;
 
-public class Positioner {
+public class Positioner extends Program {
 
 	private Robot robot = new Robot();
 
 	public static void main(String[] args) {
-		new Positioner();
+		new Positioner().start();
 	}
 
-	public Positioner() {
-
+	@Override
+	protected void run() {
+		robot.system.attach();
 		for (int i = 50; i < 110; i++) {
 			robot.S2.move(i);
 			robot.S1.move(120 - (i * 2 / 3));
@@ -23,5 +25,7 @@ public class Positioner {
 
 		robot.S2.move(90);
 		robot.S1.move(90);
+		robot.system.detach();
+
 	}
 }

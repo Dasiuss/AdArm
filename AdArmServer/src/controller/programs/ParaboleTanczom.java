@@ -1,17 +1,19 @@
 package controller.programs;
 
+import controller.Program;
 import model.ProgramsUtils;
 import model.elements.Robot;
 
-public class ParaboleTanczom {
+public class ParaboleTanczom extends Program {
 
 	private Robot robot;
 
 	public static void main(String[] args) {
-		new ParaboleTanczom();
+		new ParaboleTanczom().start();
 	}
 
-	public ParaboleTanczom() {
+	@Override
+	protected void run() {
 		robot = new Robot();
 		ProgramsUtils.startPositionFast(robot);
 

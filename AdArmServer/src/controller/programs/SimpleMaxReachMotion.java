@@ -1,16 +1,18 @@
 package controller.programs;
 
+import controller.Program;
 import model.elements.Robot;
 
-public class SimpleMaxReachMotion {
+public class SimpleMaxReachMotion extends Program {
 
 	private Robot robot = new Robot();
 
 	public static void main(String[] args) {
-		new SimpleMaxReachMotion();
+		new SimpleMaxReachMotion().start();
 	}
 
-	public SimpleMaxReachMotion() {
+	@Override
+	protected void run() {
 		robot.system.setStepDelay(5);
 
 		robot.C0.move(180);
@@ -27,5 +29,6 @@ public class SimpleMaxReachMotion {
 			robot.laser.on(i);
 		}
 		robot.laser.off();
+
 	}
 }
