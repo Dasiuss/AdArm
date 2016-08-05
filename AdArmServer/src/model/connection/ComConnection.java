@@ -66,6 +66,7 @@ public class ComConnection {
 			}
 		} catch (SerialPortException e) {
 			e.printStackTrace();
+			System.exit(23);
 		} catch (SerialPortTimeoutException e) {
 			System.out.println("could not get ack for " + Arrays.toString(data));
 			e.printStackTrace();
