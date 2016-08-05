@@ -1,10 +1,9 @@
 package model.actions;
 
 import model.elements.Element;
-import model.elements.Robot;
 
 public class Action {
-	Element elements = Robot.system;
+	Element elements;
 	Method method;
 	int value;
 	Status status = Status.UNKNOWN;
@@ -18,11 +17,6 @@ public class Action {
 
 	public Action(Element elements, Method method, int value) {
 		this.elements = elements;
-		this.method = method;
-		this.value = value;
-	}
-
-	public Action(Method method, int value) {
 		this.method = method;
 		this.value = value;
 	}

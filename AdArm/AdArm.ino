@@ -6,14 +6,15 @@
 int _system = 20, laser = 21, C0 = 0, C1 = 1, C2 = 2, S0 = 10, S1 = 11, S2 = 12;
 int _delay = 0, _move = 1, _moveFast = 2,
     _attach = 3, _detach = 4,
-    _setIntensity = 5, _setStepDelay = 6, _setStepDelayS = 7;
+    _setIntensity = 5, _setStepDelay = 6, _setStepDelaySUp = 7, _setStepDelaySDown = 8;
 
 Servo C[3];
 Servo S[3];
 int lastPosC[3];
 int lastPosS[3];
-long stepDelay = 2000;
-long stepDelayS = 500000;
+long stepDelay = 2000;//micros (max is 16383)
+long stepDelaySUp = 15000;//micros
+long stepDelaySDown = 7000;//micros
 
 int laserPin = 6;
 
@@ -27,7 +28,7 @@ int mapS[3][2] =
 {
   {0, 180},
   {0, 180},
-  {0, 180}
+  {180, 0}
 };
 
 
@@ -120,15 +121,17 @@ void handleSystem(int command, int value) {
     mCFast(2, 0);
     //S
     S[1].attach(3);
+    mSFast(1, 90);
     S[2].attach(5);
-    mS(1, 30);
-    mS(2, 90);
+    mSFast(2, 90);
     
     //TODO add stepper S0
   } else if (command == _setStepDelay ) {
     stepDelay = value;
-  } else if (command == _setStepDelayS ) {
-    stepDelayS = value;
+  } else if (command == _setStepDelaySUp ) {
+    stepDelaySUp = value;
+  } else if (command == _setStepDelaySDown ) {
+    stepDelaySDown = value;
   }
 }
 void handleServoC(int which, int command, int value) {
@@ -163,13 +166,11 @@ void mS(int which, int degree) {
 
   for (int pos = lastPosS[which]; pos < degree; pos++) {
     S[which].write(pos);
-    delay(5);
-//    delayMicroseconds(stepDelayS);
+    delayMicroseconds(stepDelaySUp);
   }
   for (int pos = lastPosS[which]; pos > degree; pos--) {
     S[which].write(pos);
-    delay(20);
-//    delayMicroseconds(stepDelayS);
+    delayMicroseconds(stepDelaySDown);
   }
   lastPosS[which] = degree;
 }

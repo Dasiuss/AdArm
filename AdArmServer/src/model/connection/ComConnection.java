@@ -62,7 +62,7 @@ public class ComConnection {
 				System.out.println("cannot send " + Arrays.toString(data));
 			} else {
 				System.out.print("sent " + Arrays.toString(data) + "... ");
-				System.out.println(serialPort.readString(3, 3000));
+				System.out.println(serialPort.readString(3, 10000));
 			}
 		} catch (SerialPortException e) {
 			e.printStackTrace();

@@ -4,44 +4,43 @@ import model.actions.Action;
 import model.actions.Method;
 
 public class System extends Element {
-	public System() {
+	private Robot robot;
+
+	public System(Robot robot) {
+		this.robot = robot;
 		value = 20;
 	}
 
-	public Action wait(int period) {
-		return new Action(this, Method.delay, period);
+	public void wait(int period) {
+		robot.execute(new Action(this, Method.delay, period));
 	}
 
-	public Action attach() {
-		return new Action(this, Method.attach);
+	public void attach() {
+		robot.execute(new Action(this, Method.attach));
 	}
 
-	public Action detach() {
-		return new Action(this, Method.detach);
+	public void detach() {
+		robot.execute(new Action(this, Method.detach));
 	}
 
-	public Action setStepDelayMicros(int stepDelay) {
-		return new Action(this, Method.setStepDelay, stepDelay);
+	public void setStepDelayMicros(int stepDelay) {
+		robot.execute(new Action(this, Method.setStepDelay, stepDelay));
 	}
 
-	public Action setStepDelay(int stepDelay) {
-		return new Action(this, Method.setStepDelay, stepDelay * 1000);
+	public void setStepDelay(int stepDelay) {
+		robot.execute(new Action(this, Method.setStepDelay, stepDelay * 1000));
 	}
 
-	public Action setStepDelayDefault() {
-		return new Action(this, Method.setStepDelay, 2000);
+	public void setStepDelayDefault() {
+		robot.execute(new Action(this, Method.setStepDelay, 2000));
 	}
 
-	public Action setStepDelaySMicros(int stepDelay) {
-		return new Action(this, Method.setStepDelayS, stepDelay);
+	public void setStepDelaySUp(int stepDelay) {
+		robot.execute(new Action(this, Method.setStepDelaySUp, stepDelay * 1000));
 	}
 
-	public Action setStepDelayS(int stepDelay) {
-		return new Action(this, Method.setStepDelayS, stepDelay * 1000);
+	public void setStepDelaySDown(int stepDelay) {
+		robot.execute(new Action(this, Method.setStepDelaySDown, stepDelay * 1000));
 	}
-
-	public Action setStepDelaySDefault() {
-		return new Action(this, Method.setStepDelayS, 500000);
-	}
-
+	// TODO default S up/down speed
 }

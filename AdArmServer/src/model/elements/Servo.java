@@ -4,15 +4,18 @@ import model.actions.Action;
 import model.actions.Method;
 
 public class Servo extends Element {
-	public Servo(int value) {
+	private Robot robot;
+
+	public Servo(int value, Robot robot) {
 		this.value = value;
+		this.robot = robot;
 	}
 
-	public Action moveFast(int degree) {
-		return new Action(this, Method.moveFast, degree);
+	public void moveFast(int degree) {
+		robot.execute(new Action(this, Method.moveFast, degree));
 	}
 
-	public Action move(int degree) {
-		return new Action(this, Method.move, degree);
+	public void move(int degree) {
+		robot.execute(new Action(this, Method.move, degree));
 	}
 }
