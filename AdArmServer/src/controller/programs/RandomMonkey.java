@@ -4,12 +4,10 @@ import java.util.Random;
 
 import controller.Program;
 import model.ProgramsUtils;
-import model.elements.Robot;
 import model.elements.Servo;
 
 public class RandomMonkey extends Program {
 
-	private Robot robot = new Robot();
 	private static final int MOVES_COUNT = 80;
 
 	public static void main(String[] args) {

@@ -2,11 +2,8 @@ package controller.programs;
 
 import controller.Program;
 import model.ProgramsUtils;
-import model.elements.Robot;
 
 public class PickUp extends Program {
-
-	private Robot robot = new Robot();
 
 	public static void main(String[] args) {
 		new PickUp().start();

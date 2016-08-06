@@ -3,7 +3,7 @@ package controller;
 import model.elements.Robot;
 
 public abstract class Program {
-	protected Robot robot = new Robot();
+	protected final Robot robot = new Robot();
 
 	public void start() {
 		robot.system.attach();
