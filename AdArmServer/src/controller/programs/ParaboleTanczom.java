@@ -5,8 +5,7 @@ import model.ProgramsUtils;
 import model.elements.Robot;
 
 public class ParaboleTanczom extends Program {
-
-	private Robot robot;
+	Robot robot;
 
 	public static void main(String[] args) {
 		new ParaboleTanczom().start();
@@ -14,7 +13,6 @@ public class ParaboleTanczom extends Program {
 
 	@Override
 	protected void run() {
-		robot = new Robot();
 		ProgramsUtils.startPositionFast(robot);
 
 		robot.C0.move(80);

@@ -1,11 +1,8 @@
 package controller.programs;
 
 import controller.Program;
-import model.elements.Robot;
 
 public class SimpleMaxReachMotion extends Program {
-
-	private Robot robot = new Robot();
 
 	public static void main(String[] args) {
 		new SimpleMaxReachMotion().start();
