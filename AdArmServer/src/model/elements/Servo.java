@@ -13,9 +13,12 @@ public class Servo extends Element {
 
 	public void moveFast(int degree) {
 		robot.execute(new Action(this, Method.moveFast, degree));
+		lastPos = degree;
 	}
 
 	public void move(int degree) {
 		robot.execute(new Action(this, Method.move, degree));
+		lastPos = degree;
 	}
+
 }

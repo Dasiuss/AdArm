@@ -1,5 +1,8 @@
 package model.elements;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import model.actions.Action;
 import model.connection.ComConnection;
 
@@ -31,5 +34,19 @@ public class Robot {
 
 	public void execute(Action action) {
 		comConnection.send(action.encode().getValue());
+	}
+
+	public List<Integer> getPositions() {
+		List<Integer> positions = new LinkedList<>();
+		positions.add(laser.getLastPos());
+
+		positions.add(S0.getLastPos());
+		positions.add(S1.getLastPos());
+		positions.add(S2.getLastPos());
+
+		positions.add(C0.getLastPos());
+		positions.add(C1.getLastPos());
+		positions.add(C2.getLastPos());
+		return positions;
 	}
 }
