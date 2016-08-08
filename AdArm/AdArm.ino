@@ -13,7 +13,7 @@ Servo C[3];
 Servo S[3];
 Stepper stepper = Stepper(48, 7,12,8,13);
 int stepsPerAngle = 42;
-int stepperSpeed = 650;
+int stepperSpeed = 550;
 
 bool wasAttached = false;
 int lastPosC[3];

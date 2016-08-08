@@ -3,8 +3,10 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 import javax.swing.JSlider;
@@ -64,22 +66,21 @@ public class GuiController {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<Integer> positions = robot.getPositions();
-				try {
-					FileWriter fw = new FileWriter("D:/positions.txt");
-					fw.append(positions.toString());
-					fw.append("/n");
-					fw.flush();
-					fw.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-
+				save();
 			}
 		};
 	}
 
+	public void save() {
+		List<Integer> positions = robot.getPositions();
+		try {
+			Files.write(Paths.get("D:/positions.txt"), (positions.toString() + "\n").getBytes(), StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public KeyListener getKeyListener() {
-		return new NumPadKeyListener(robot);
+		return new NumPadKeyListener(robot, this);
 	}
 }

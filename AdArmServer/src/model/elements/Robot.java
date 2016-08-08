@@ -49,4 +49,17 @@ public class Robot {
 		positions.add(C2.getLastPos());
 		return positions;
 	}
+
+	public void setPositions(List<Integer> positions) {
+		laser.on(positions.get(0));
+
+		S1.moveFast(positions.get(2));
+		S2.moveFast(positions.get(3));
+
+		C0.moveFast(positions.get(4));
+		C1.moveFast(positions.get(5));
+		C2.moveFast(positions.get(6));
+
+		S0.moveFast(positions.get(1));
+	}
 }

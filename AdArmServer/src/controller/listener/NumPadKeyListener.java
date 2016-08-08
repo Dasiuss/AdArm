@@ -3,14 +3,17 @@ package controller.listener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import controller.GuiController;
 import model.elements.Robot;
 
 public class NumPadKeyListener implements KeyListener {
 
 	private Robot robot;
+	private GuiController controller;
 
-	public NumPadKeyListener(Robot robot) {
+	public NumPadKeyListener(Robot robot, GuiController controller) {
 		this.robot = robot;
+		this.controller = controller;
 	}
 
 	@Override
@@ -61,6 +64,10 @@ public class NumPadKeyListener implements KeyListener {
 			// laser on/off
 		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
 			robot.laser.toggle();
+
+			// save
+		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			controller.save();
 
 			// else - unknown
 		} else {
