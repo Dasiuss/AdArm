@@ -15,6 +15,7 @@ Stepper stepper = Stepper(48, 7,12,8,13);
 int stepsPerAngle = 42;
 int stepperSpeed = 650;
 
+bool wasAttached = false;
 int lastPosC[3];
 int lastPosS[3];
 long stepDelay = 2000;//micros (max is 16383)
@@ -127,14 +128,21 @@ void handleSystem(int command, int value) {
     C[0].attach(9);
     C[1].attach(10);
     C[2].attach(11);
-    mCFast(0, 30);
-    mCFast(1, 0);
-    mCFast(2, 0);
+    if(!wasAttached){
+      mCFast(0, 30);
+      mCFast(1, 0);
+      mCFast(2, 0);
+    }
     //S
     S[1].attach(3);
-    mSFast(1, 90);
+    if(!wasAttached){
+      mSFast(1, 90);
+    }
     S[2].attach(5);
-    mSFast(2, 90);
+    if(!wasAttached){
+      mSFast(2, 30);
+    }
+    wasAttached=true;
     
   } else if (command == _setStepDelay ) {
     stepDelay = value;

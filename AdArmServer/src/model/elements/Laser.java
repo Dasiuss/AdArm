@@ -9,6 +9,7 @@ public class Laser extends Element {
 	public Laser(Robot robot) {
 		this.robot = robot;
 		value = 21;
+		lastPos = 0;
 	}
 
 	public void on(int intensity) {
@@ -24,6 +25,14 @@ public class Laser extends Element {
 	public void off() {
 		on(0);
 		lastPos = 0;
+	}
+
+	public void toggle() {
+		if (lastPos == 0) {
+			on();
+		} else {
+			off();
+		}
 	}
 
 }

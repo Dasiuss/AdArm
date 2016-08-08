@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import controller.listener.NumPadKeyListener;
 import controller.listener.SliderListener;
 import model.elements.Robot;
 import model.elements.Servo;
@@ -75,5 +77,9 @@ public class GuiController {
 
 			}
 		};
+	}
+
+	public KeyListener getKeyListener() {
+		return new NumPadKeyListener(robot);
 	}
 }

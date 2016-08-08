@@ -45,6 +45,7 @@ public class Gui {
 
 		JButton btnAttach = new JButton("Attach");
 		btnAttach.addActionListener(guiController.getAttachListener());
+		btnAttach.addKeyListener(guiController.getKeyListener());
 
 		JButton btnDetach = new JButton("Detach");
 		btnDetach.addActionListener(guiController.getDetachListener());

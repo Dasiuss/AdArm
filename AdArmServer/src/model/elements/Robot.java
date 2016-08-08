@@ -12,13 +12,13 @@ public class Robot {
 
 	public final System system = new System(this);
 	public final Laser laser = new Laser(this);
-	public final Servo C0 = new Servo(0, this);
-	public final Servo C1 = new Servo(1, this);
-	public final Servo C2 = new Servo(2, this);
+	public final Servo C0 = new Servo(0, 30, this);
+	public final Servo C1 = new Servo(1, 0, this);
+	public final Servo C2 = new Servo(2, 0, this);
 
-	public final Servo S0 = new Servo(10, this);
-	public final Servo S1 = new Servo(11, this);
-	public final Servo S2 = new Servo(12, this);
+	public final Servo S0 = new Servo(10, 90, this);
+	public final Servo S1 = new Servo(11, 90, this);
+	public final Servo S2 = new Servo(12, 30, this);
 
 	public Robot(ComConnection comConnection) {
 		this.comConnection = comConnection;
