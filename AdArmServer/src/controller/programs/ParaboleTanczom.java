@@ -1,11 +1,8 @@
 package controller.programs;
 
 import controller.Program;
-import model.ProgramsUtils;
-import model.elements.Robot;
 
 public class ParaboleTanczom extends Program {
-	Robot robot;
 
 	public static void main(String[] args) {
 		new ParaboleTanczom().start();
@@ -13,7 +10,7 @@ public class ParaboleTanczom extends Program {
 
 	@Override
 	protected void run() {
-		ProgramsUtils.startPositionFast(robot);
+		// ProgramsUtils.startPositionFast(robot);
 
 		robot.C0.move(80);
 		robot.C2.move(0);
