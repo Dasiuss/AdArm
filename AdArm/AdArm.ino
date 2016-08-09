@@ -1,3 +1,4 @@
+#include <Stepper.h>
 #include <EEPROM.h>
 #include <Servo.h>
 
@@ -10,6 +11,11 @@ int _delay = 0, _move = 1, _moveFast = 2,
 
 Servo C[3];
 Servo S[3];
+Stepper stepper = Stepper(48, 7,12,8,13);
+int stepsPerAngle = 42;
+int stepperSpeed = 550;
+
+bool wasAttached = false;
 int lastPosC[3];
 int lastPosS[3];
 long stepDelay = 2000;//micros (max is 16383)
@@ -36,6 +42,9 @@ void setup() {
   Serial.begin(9600);
 
   pinMode(laserPin, OUTPUT);
+  
+  stepper.setSpeed(stepperSpeed);
+  lastPosS[0] = 90;
 
   Serial.read();
   Serial.print("rdy");
@@ -109,23 +118,32 @@ void handleSystem(int command, int value) {
     C[2].detach();
     S[1].detach();
     S[2].detach();
-    //TODO add stepper S0
+    digitalWrite(7,0);
+    digitalWrite(8,0);
+    digitalWrite(12,0);
+    digitalWrite(13,0);
 
   } else if (command == _attach) {
     //C
     C[0].attach(9);
     C[1].attach(10);
     C[2].attach(11);
-    mCFast(0, 30);
-    mCFast(1, 0);
-    mCFast(2, 0);
+    if(!wasAttached){
+      mCFast(0, 30);
+      mCFast(1, 0);
+      mCFast(2, 0);
+    }
     //S
     S[1].attach(3);
-    mSFast(1, 90);
+    if(!wasAttached){
+      mSFast(1, 90);
+    }
     S[2].attach(5);
-    mSFast(2, 90);
+    if(!wasAttached){
+      mSFast(2, 30);
+    }
+    wasAttached=true;
     
-    //TODO add stepper S0
   } else if (command == _setStepDelay ) {
     stepDelay = value;
   } else if (command == _setStepDelaySUp ) {
@@ -150,8 +168,17 @@ void handleServoS(int which, int command, int value) {
   }
 
 }
-void handleStepper(int command, int value) {
-  //TODO
+void handleStepper(int command, int degree) {
+  degree = mapDegreeS(0, degree);
+
+  stepper.step((degree - lastPosS[0]) * stepsPerAngle);
+  
+  digitalWrite(7,0);
+  digitalWrite(8,0);
+  digitalWrite(12,0);
+  digitalWrite(13,0);
+
+  lastPosS[0] = degree;
 }
 
 void mSFast(int which, int degree) {
