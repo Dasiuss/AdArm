@@ -13,7 +13,7 @@ Servo C[3];
 Servo S[3];
 Stepper stepper = Stepper(48, 7,12,8,13);
 int stepsPerAngle = 42;
-int stepperSpeed = 550;
+int stepperSpeed = 450;
 
 bool wasAttached = false;
 int lastPosC[3];
@@ -28,14 +28,16 @@ int mapC[3][2] =
 {
   {20, 125},
   {6, 180},
-  {180, -10}
+  {175, -10}
 };
 int mapS[3][2] =
 {
   {0, 180},
   {0, 180},
-  {180, 0}
+  {0, 180}
 };
+int startingPositionsC[3] = { 30, 0, 0 };
+int startingPositionsS[3] = { 90, 90, 70 };
 
 
 void setup() {
@@ -140,7 +142,7 @@ void handleSystem(int command, int value) {
     }
     S[2].attach(5);
     if(!wasAttached){
-      mSFast(2, 30);
+      mSFast(2, 70);
     }
     wasAttached=true;
     

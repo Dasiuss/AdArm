@@ -14,17 +14,17 @@ public class Servo extends Element {
 
 	public void moveFast(int degree) {
 		robot.execute(new Action(this, Method.moveFast, degree));
-		lastPos = degree;
+		lastPos = Math.max(Math.min(degree, 180), 0);
 	}
 
 	public void move(int degree) {
 		robot.execute(new Action(this, Method.move, degree));
-		lastPos = degree;
+		lastPos = Math.max(Math.min(degree, 180), 0);
 	}
 
-	public void moveRelativ(int degree) {
+	public void moveRelative(int degree) {
 		robot.execute(new Action(this, Method.move, lastPos + degree));
-		lastPos += degree;
+		lastPos = Math.max(Math.min(lastPos + degree, 180), 0);
 	}
 
 }

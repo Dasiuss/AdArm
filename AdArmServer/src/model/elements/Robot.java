@@ -18,7 +18,7 @@ public class Robot {
 
 	public final Servo S0 = new Servo(10, 90, this);
 	public final Servo S1 = new Servo(11, 90, this);
-	public final Servo S2 = new Servo(12, 30, this);
+	public final Servo S2 = new Servo(12, 70, this);
 
 	public Robot(ComConnection comConnection) {
 		this.comConnection = comConnection;
@@ -53,6 +53,8 @@ public class Robot {
 	public void setPositions(List<Integer> positions) {
 		laser.on(positions.get(0));
 
+		S0.moveFast(positions.get(1));
+
 		S1.moveFast(positions.get(2));
 		S2.moveFast(positions.get(3));
 
@@ -60,6 +62,19 @@ public class Robot {
 		C1.moveFast(positions.get(5));
 		C2.moveFast(positions.get(6));
 
-		S0.moveFast(positions.get(1));
+	}
+
+	public void setPositionsSlow(List<Integer> positions) {
+		laser.on(positions.get(0));
+
+		S0.move(positions.get(1));
+
+		S1.move(positions.get(2));
+		S2.move(positions.get(3));
+
+		C0.move(positions.get(4));
+		C1.move(positions.get(5));
+		C2.move(positions.get(6));
+
 	}
 }
