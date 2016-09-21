@@ -11,7 +11,7 @@ public class Positioner extends Program {
 	@Override
 	protected void run() {
 
-		robot.S0.move(180);
+		robot.C0.move(90);
 
 	}
 }
