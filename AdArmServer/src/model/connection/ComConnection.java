@@ -9,7 +9,7 @@ import jssc.SerialPortException;
 import jssc.SerialPortTimeoutException;
 
 public class ComConnection {
-	private final static String DEFAULT_COMNAME = "COM3";
+	private final static String DEFAULT_COMNAME = "COM5";
 	private static final boolean DEBUG = false;
 	SerialPort serialPort;
 

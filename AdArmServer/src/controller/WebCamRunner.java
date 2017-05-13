@@ -1,5 +1,6 @@
 package controller;
 
+import static java.lang.Thread.sleep;
 import static org.bytedeco.javacpp.opencv_core.*;
 
 import java.util.LinkedList;
@@ -37,6 +38,9 @@ public class WebCamRunner extends Program {
 	protected void run() {
 		OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
 		CvMemStorage storage = cvCreateMemStorage(0);
+		robot.system.attach();
+		robot.C0.moveFast(100);
+		robot.S2.moveFast(50);
 		while (true) {
 			try {
 				IplImage img = converter.convert(cam.getFrame());
@@ -50,24 +54,7 @@ public class WebCamRunner extends Program {
 
 				LinkedList<Rectangle> rectangles = RectangleCreator.getListFromCvSeq(rectanglesSeq);
 
-				OptionalDouble averageOpt = rectangles.stream().mapToInt(r -> r.getCenter().x).average();
-				if (averageOpt.isPresent()) {
-					double avgX = averageOpt.getAsDouble();
-					if (avgX < 300) {
-						System.out.println("<");
-					} else if (avgX > 340) {
-						System.out.println(">");
-					} else {
-						double avgY = rectangles.stream().mapToInt(r -> r.getCenter().y).average().getAsDouble();
-						if (avgY < 220) {
-							System.out.println("^");
-						} else if (avgY > 260) {
-							System.out.println(",");
-						} else {
-							System.out.println("ok");
-						}
-					}
-				}
+				adjustPosition(rectangles);
 
 				// release both images
 				cvReleaseImage(img);
@@ -79,6 +66,46 @@ public class WebCamRunner extends Program {
 			}
 		}
 
+	}
+
+	private void adjustPosition(LinkedList<Rectangle> rectangles) throws InterruptedException {
+		if (rectangles.isEmpty()) {
+			return;
+		}
+
+		double avgX = rectangles.stream().mapToInt(r -> r.getCenter().x).average().getAsDouble();
+		double avgY = rectangles.stream().mapToInt(r -> r.getCenter().y).average().getAsDouble();
+
+		adjustX(avgX);
+		adjustY(avgY);
+
+		if (avgY <= 260 && avgY >= 220 && avgX >= 300 && avgX <= 340) {
+			System.out.println("ok");
+//					robot.S2.moveRelative(-1);
+			sleep(30);
+		}
+	}
+
+	private void adjustY(double avgY) throws InterruptedException {
+		if (avgY < 220) {
+			System.out.println("^");
+			robot.S1.moveRelative(-1);
+			robot.S2.moveRelative(1);
+		} else if (avgY > 260) {
+			System.out.println(",");
+			robot.S1.moveRelative(1);
+			robot.S2.moveRelative(-1);
+		}
+	}
+
+	private void adjustX(double avgX) throws InterruptedException {
+		if (avgX < 300) {
+			System.out.println("<");
+			robot.S0.moveRelative(-1);
+		} else if (avgX > 340) {
+			System.out.println(">");
+			robot.S0.moveRelative(1);
+		}
 	}
 
 }
