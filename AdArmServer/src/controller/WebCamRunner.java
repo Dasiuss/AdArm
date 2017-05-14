@@ -19,6 +19,8 @@ import detection.WebCam;
 
 public class WebCamRunner extends Program {
 
+	private static final int CAMERA_WIDTH = 640;
+	private static final int CAMERA_HEIGHT = 480;
 	private RectangleDetector rectangleDetector = new RectangleDetector();
 	private CanvasFrame canvas;
 	private WebCam cam;
@@ -81,31 +83,32 @@ public class WebCamRunner extends Program {
 
 		if (avgY <= 260 && avgY >= 220 && avgX >= 300 && avgX <= 340) {
 			System.out.println("ok");
-//					robot.S2.moveRelative(-1);
+//			robot.S2.moveRelative(-1);
 			sleep(30);
-		}
-	}
-
-	private void adjustY(double avgY) throws InterruptedException {
-		if (avgY < 220) {
-			System.out.println("^");
-			robot.S1.moveRelative(-1);
-			robot.S2.moveRelative(1);
-		} else if (avgY > 260) {
-			System.out.println(",");
-			robot.S1.moveRelative(1);
-			robot.S2.moveRelative(-1);
+		} else {
+			sleep(10);
 		}
 	}
 
 	private void adjustX(double avgX) throws InterruptedException {
-		if (avgX < 300) {
-			System.out.println("<");
-			robot.S0.moveRelative(-1);
-		} else if (avgX > 340) {
-			System.out.println(">");
-			robot.S0.moveRelative(1);
+		int positionDifference = (int) (avgX - CAMERA_WIDTH / 2);
+
+		if (Math.abs(positionDifference) < 20) {
+			return;
 		}
+
+		robot.S0.moveRelative(Math.floorDiv(positionDifference, 80));
+	}
+
+	private void adjustY(double avgY) throws InterruptedException {
+		int positionDifference = (int) (avgY - CAMERA_HEIGHT / 2);
+
+			if (Math.abs(positionDifference) < 20) {
+			return;
+		}
+
+		robot.S1.moveRelative(Math.floorDiv(positionDifference, 90));
+		robot.S2.moveRelative(-Math.floorDiv(positionDifference, 90));
 	}
 
 }
