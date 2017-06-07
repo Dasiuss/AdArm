@@ -26,22 +26,15 @@ public class GuiController {
 		robot = new Robot();
 	}
 
-	public ChangeListener getSliderListener(Servo s) {
-		return new SliderListener(s);
+	public int[] getSPositions() {
+		return new int[]{
+			robot.S0.getLastPos(), robot.S1.getLastPos(), robot.S2.getLastPos()
+		} ;
 	}
-
-	public ChangeListener getSliderSpeedListener() {
-		return new ChangeListener() {
-
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				JSlider source = (JSlider) e.getSource();
-				if (!source.getValueIsAdjusting()) {
-					int value = source.getValue();
-					robot.system.setStepDelay(value * 1000);
-				}
-			}
-		};
+	public int[] getCPositions() {
+		return new int[]{
+			robot.C0.getLastPos(), robot.C1.getLastPos(), robot.C2.getLastPos()
+		} ;
 	}
 
 	public ActionListener getAttachListener() {
@@ -80,7 +73,7 @@ public class GuiController {
 		}
 	}
 
-	public KeyListener getKeyListener() {
-		return new NumPadKeyListener(robot, this);
+	public KeyListener getKeyListener(Runnable callback) {
+		return new NumPadKeyListener(robot, this, callback);
 	}
 }

@@ -10,10 +10,12 @@ public class NumPadKeyListener implements KeyListener {
 
 	private Robot robot;
 	private GuiController controller;
+	private Runnable callback;
 
-	public NumPadKeyListener(Robot robot, GuiController controller) {
+	public NumPadKeyListener(Robot robot, GuiController controller, Runnable callback) {
 		this.robot = robot;
 		this.controller = controller;
+		this.callback = callback;
 	}
 
 	@Override
@@ -73,6 +75,7 @@ public class NumPadKeyListener implements KeyListener {
 		} else {
 			System.out.println(e);
 		}
+		callback.run();
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class ComConnection {
 		} catch (SerialPortException e) {
 			e.printStackTrace();
 		} catch (SerialPortTimeoutException e) {
-			System.out.println("there is no rdy siggnal");
+			System.out.println("there is no rdy signal");
 			e.printStackTrace();
 		}
 	}
