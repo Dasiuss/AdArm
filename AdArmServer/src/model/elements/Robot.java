@@ -6,7 +6,7 @@ import java.util.List;
 import model.actions.Action;
 import model.connection.ComConnection;
 
-public class Robot {
+public class Robot extends AngledMachine {
 
 	private ComConnection comConnection;
 
@@ -32,7 +32,7 @@ public class Robot {
 		comConnection = new ComConnection(comName);
 	}
 
-	public void execute(Action action) {
+	void execute(Action action) {
 		comConnection.send(action.encode().getValue());
 	}
 
@@ -49,6 +49,16 @@ public class Robot {
 		positions.add(C2.getLastPos());
 		return positions;
 	}
+
+	public void reachTo(double effectorTargetLevel){
+
+	}
+
+	public void levelTo(double effectorTargetLevel){
+
+	}
+
+
 
 	public void setPositions(List<Integer> positions) {
 		laser.on(positions.get(0));
@@ -77,4 +87,15 @@ public class Robot {
 		C2.move(positions.get(6));
 
 	}
+
+	@Override
+	double getAlpha() {
+		return S1.getLastPos() + s1BaseOffset;
+	}
+
+	@Override
+	double getBeta() {
+		return S2.getLastPos() + s2BaseOffset;
+	}
+
 }

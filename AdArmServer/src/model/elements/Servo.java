@@ -6,8 +6,8 @@ import model.actions.Method;
 public class Servo extends Element {
 	private Robot robot;
 
-	public Servo(int value, int startPos, Robot robot) {
-		this.value = value;
+	public Servo(int code, int startPos, Robot robot) {
+		this.code = code;
 		this.robot = robot;
 		lastPos = startPos;
 	}

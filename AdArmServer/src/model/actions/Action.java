@@ -26,6 +26,6 @@ public class Action {
 	}
 
 	public EncodedAction encode() {
-		return new EncodedAction(elements.getValue(), method.getValue(), (value >> 24) % 256, (value >> 16) % 256, (value >> 8) % 256, (value) % 256);
+		return new EncodedAction(elements.getCode(), method.getValue(), (value >> 24) % 256, (value >> 16) % 256, (value >> 8) % 256, (value) % 256);
 	}
 }

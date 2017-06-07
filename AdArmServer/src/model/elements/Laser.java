@@ -8,7 +8,7 @@ public class Laser extends Element {
 
 	public Laser(Robot robot) {
 		this.robot = robot;
-		value = 21;
+		code = 21;
 		lastPos = 0;
 	}
 

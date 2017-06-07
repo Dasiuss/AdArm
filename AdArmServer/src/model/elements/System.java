@@ -8,7 +8,7 @@ public class System extends Element {
 
 	public System(Robot robot) {
 		this.robot = robot;
-		value = 20;
+		code = 20;
 	}
 
 	public void wait(int period) {
