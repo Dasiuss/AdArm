@@ -13,6 +13,7 @@ public class Gui {
 	private GuiController guiController;
 	private final JLabel sValuesLabel;
 	private final JLabel cValuesLabel;
+	private final JLabel heightLabel;
 
 	/**
 	 * Launch the application.
@@ -54,11 +55,12 @@ public class Gui {
 		btnSavePosition.addActionListener(guiController.getSaveButtonListener());
 		btnSavePosition.addKeyListener(guiController.getKeyListener(this::updateLabels));
 
-		GridLayout layout = new GridLayout(7, 1);
+		GridLayout layout = new GridLayout(8, 1);
 		frame.setLayout(layout);
 
 		sValuesLabel = createLabel(" | | ");
 		cValuesLabel = createLabel(" | | ");
+		heightLabel = createLabel(" | | ");
 
 		frame.add(btnAttach);
 		frame.add(btnDetach);
@@ -67,15 +69,17 @@ public class Gui {
 		frame.add(sValuesLabel);
 		frame.add(createLabel("C0 | C1 | C2"));
 		frame.add(cValuesLabel);
+		frame.add(heightLabel);
 
 		frame.pack();
-		frame.setBounds(600, 300, 100, 300);
+		frame.setBounds(600, 300, 100, 330);
 		frame.setVisible(true);
 	}
 
 	private void updateLabels() {
 		setSValues(guiController.getSPositions());
 		setCValues(guiController.getCPositions());
+		heightLabel.setText(guiController.robot.getEffectorLevel()+"cm");
 	}
 
 	private JLabel createLabel(String text) {
