@@ -1,5 +1,6 @@
 package controller;
 
+import static java.lang.System.exit;
 import static java.lang.Thread.sleep;
 import static org.bytedeco.javacpp.opencv_core.*;
 
@@ -16,6 +17,7 @@ import detection.Rectangle;
 import detection.RectangleCreator;
 import detection.RectangleDetector;
 import detection.WebCam;
+import model.ProgramsUtils;
 
 public class WebCamRunner extends Program {
 
@@ -81,13 +83,41 @@ public class WebCamRunner extends Program {
 		adjustX(avgX);
 		adjustY(avgY);
 
-		if (avgY <= 260 && avgY >= 220 && avgX >= 300 && avgX <= 340) {
-			System.out.println("ok");
-//			robot.S2.moveRelative(-1);
-			sleep(30);
+		boolean isInCenter = avgY <= 300 && avgY >= 200 && avgX >= 260 && avgX <= 340;
+		double effectorLevel = robot.getEffectorLevel();
+		System.out.println("effectorLevel = " + effectorLevel);
+		if (isInCenter && effectorLevel <= 9.5) {
+			robot.C2.move(30);
+			sleep(500);
+			robot.C0.move(0);
+			sleep(500);
+			robot.C2.move(0);
+			sleep(500);
+			while(robot.S2.getLastPos() < 90 && robot.S1.getLastPos()< 90){
+				if(robot.S2.getLastPos() < 90 ){
+					robot.S2.moveRelative(1);
+				}
+				if(robot.S1.getLastPos() < 90 ){
+					robot.S1.moveRelative(1);
+				}
+			}
+			sleep(3000);
+			robot.C0.move(100);
+			sleep(500);
+
+			ProgramsUtils.startPosition(robot);
+			robot.C0.moveFast(100);
+			robot.S2.moveFast(50);
+			robot.system.detach();
+			exit(0);
+		} else if (isInCenter) {
+			robot.S2.moveRelative(-1);
+			robot.S1.moveRelative(-1);
+			//sleep(30);
 		} else {
-			sleep(10);
+			//sleep(10);
 		}
+
 	}
 
 	private void adjustX(double avgX) throws InterruptedException {
@@ -97,18 +127,24 @@ public class WebCamRunner extends Program {
 			return;
 		}
 
-		robot.S0.moveRelative(Math.floorDiv(positionDifference, 80));
+		int degree = Math.floorDiv(positionDifference, 80);
+		if (degree == 0) {
+			degree = (int) Math.signum(positionDifference);
+		}
+		robot.S0.moveRelative(degree);
 	}
 
 	private void adjustY(double avgY) throws InterruptedException {
 		int positionDifference = (int) (avgY - CAMERA_HEIGHT / 2);
 
-			if (Math.abs(positionDifference) < 20) {
+		if (Math.abs(positionDifference) < 20) {
 			return;
 		}
 
-		robot.S1.moveRelative(Math.floorDiv(positionDifference, 90));
-		robot.S2.moveRelative(-Math.floorDiv(positionDifference, 90));
+		robot.S1.moveRelative((int) Math.signum(positionDifference));
+		robot.S2.moveRelative((int) (-1 * Math.signum(positionDifference)));
+//		robot.S1.moveRelative(Math.max(Math.floorDiv(positionDifference, 90) , 1));
+//		robot.S2.moveRelative(Math.min(-Math.floorDiv(positionDifference, 90) , -1));
 	}
 
 }

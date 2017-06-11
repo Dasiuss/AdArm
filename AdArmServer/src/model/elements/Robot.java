@@ -50,16 +50,6 @@ public class Robot extends AngledMachine {
 		return positions;
 	}
 
-	public void reachTo(double effectorTargetLevel){
-
-	}
-
-	public void levelTo(double effectorTargetLevel){
-
-	}
-
-
-
 	public void setPositions(List<Integer> positions) {
 		laser.on(positions.get(0));
 
