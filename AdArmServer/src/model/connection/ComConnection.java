@@ -8,6 +8,7 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortTimeoutException;
 
+
 public class ComConnection {
 	private final static String DEFAULT_COMNAME = "COM8";
 	private static final boolean DEBUG = false;

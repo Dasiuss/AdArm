@@ -37,12 +37,8 @@ public class RectangleCreator {
 		return vertices;
 	}
 
-	static boolean onImageEdge(Coords coords) {
+	private static boolean onImageEdge(Coords coords) {
 		return coords.x == 1 || coords.y == 1 || coords.x == 638 || coords.y == 478;
-	}
-
-	static boolean onImageEdge(CvPoint position) {
-		return position.x() == 1 || position.y() == 1 || position.x() == 638 || position.y() == 478;
 	}
 
 }

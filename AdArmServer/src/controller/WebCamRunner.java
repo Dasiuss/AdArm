@@ -28,9 +28,9 @@ public class WebCamRunner extends Program {
 	private static final int CAMERA_HEIGHT = 480;
 
 	private static final int MAX_X_VARIATION = 100;
-	private static final int MAX_Y_VARIATION = 60;
+	private static final int MAX_Y_VARIATION = 50;
 	private static final int CENTER_X = 300; //slightly left
-	private static final int CENTER_Y = 280; //slightly up
+	private static final int CENTER_Y = 300; //slightly up
 
 	private RectangleDetector rectangleDetector = new RectangleDetector();
 	private CanvasFrame canvas;
