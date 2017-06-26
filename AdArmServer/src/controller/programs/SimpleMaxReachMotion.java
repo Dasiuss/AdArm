@@ -5,11 +5,11 @@ import controller.Program;
 public class SimpleMaxReachMotion extends Program {
 
 	public static void main(String[] args) {
-		new SimpleMaxReachMotion().start();
+		new SimpleMaxReachMotion().run();
 	}
 
 	@Override
-	protected void run() {
+	public void start() {
 		robot.system.setStepDelay(5);
 
 		robot.C0.move(180);
@@ -20,12 +20,12 @@ public class SimpleMaxReachMotion extends Program {
 		robot.C2.move(0);
 
 		for (int i = 0; i < 256; i += 10) {
-			robot.laser.on(i);
+			robot.accessory.on(i);
 		}
 		for (int i = 255; i >= 0; i -= 10) {
-			robot.laser.on(i);
+			robot.accessory.on(i);
 		}
-		robot.laser.off();
+		robot.accessory.off();
 
 	}
 }

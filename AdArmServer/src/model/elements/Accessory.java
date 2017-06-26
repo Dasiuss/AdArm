@@ -3,10 +3,10 @@ package model.elements;
 import model.actions.Action;
 import model.actions.Method;
 
-public class Laser extends Element {
+public class Accessory extends Element {
 	private Robot robot;
 
-	public Laser(Robot robot) {
+	public Accessory(Robot robot) {
 		this.robot = robot;
 		code = 21;
 		lastPos = 0;

@@ -122,7 +122,7 @@ public class WebcamAndMicrophoneCapture
 
                 try
                 {
-                    // Open and start capturing audio
+                    // Open and run capturing audio
                     // It's possible to have more control over the chosen audio device with this line:
                     // TargetDataLine line = (TargetDataLine)mixer.getLine(dataLineInfo);
                     TargetDataLine line = (TargetDataLine)AudioSystem.getLine(dataLineInfo);
@@ -198,7 +198,7 @@ public class WebcamAndMicrophoneCapture
                 cFrame.showImage(capturedFrame);
             }
 
-            // Let's define our start time...
+            // Let's define our run time...
             // This needs to be initialized as close to when we'll use it as
             // possible,
             // as the delta from assignment to computed time could be too high

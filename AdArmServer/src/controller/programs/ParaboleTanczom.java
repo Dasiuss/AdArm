@@ -5,11 +5,11 @@ import controller.Program;
 public class ParaboleTanczom extends Program {
 
 	public static void main(String[] args) {
-		new ParaboleTanczom().start();
+		new ParaboleTanczom().run();
 	}
 
 	@Override
-	protected void run() {
+	public void start() {
 		// ProgramsUtils.startPositionFast(robot);
 
 		robot.C0.move(80);

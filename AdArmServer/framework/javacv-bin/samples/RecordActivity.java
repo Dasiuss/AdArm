@@ -194,7 +194,7 @@ public class RecordActivity extends Activity implements OnClickListener {
         layoutParam = new RelativeLayout.LayoutParams(screenWidth, screenHeight);
         topLayout.addView(preViewLayout, layoutParam);
 
-        /* add control button: start and stop */
+        /* add control button: startq and stop */
         btnRecorderControl = (Button) findViewById(R.id.recorder_control);
         btnRecorderControl.setText("Start");
         btnRecorderControl.setOnClickListener(this);
@@ -218,7 +218,7 @@ public class RecordActivity extends Activity implements OnClickListener {
         Log.i(LOG_TAG, "cameara open");
         cameraView = new CameraView(this, cameraDevice);
         topLayout.addView(cameraView, layoutParam);
-        Log.i(LOG_TAG, "cameara preview start: OK");
+        Log.i(LOG_TAG, "cameara preview startq: OK");
     }
 
     //---------------------------------------
@@ -414,7 +414,7 @@ public class RecordActivity extends Activity implements OnClickListener {
                 audioData.limit(bufferReadResult);
                 if (bufferReadResult > 0) {
                     Log.v(LOG_TAG,"bufferReadResult: " + bufferReadResult);
-                    // If "recording" isn't true when start this thread, it never get's set according to this if statement...!!!
+                    // If "recording" isn't true when startq this thread, it never get's set according to this if statement...!!!
                     // Why?  Good question...
                     if (recording) {
                         if (RECORD_LENGTH <= 0) try {

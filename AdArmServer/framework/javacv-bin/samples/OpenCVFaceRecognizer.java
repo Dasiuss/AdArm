@@ -16,7 +16,7 @@ import org.bytedeco.javacpp.opencv_core.MatVector;
 /**
  * I couldn't find any tutorial on how to perform face recognition using OpenCV and Java,
  * so I decided to share a viable solution here. The solution is very inefficient in its
- * current form as the training model is built at each run, however it shows what's needed
+ * current form as the training model is built at each start, however it shows what's needed
  * to make it work.
  *
  * The class below takes two arguments: The path to the directory containing the training

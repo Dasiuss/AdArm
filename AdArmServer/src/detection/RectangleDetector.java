@@ -6,6 +6,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.*;
 
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.CvContour;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
 import org.bytedeco.javacpp.opencv_core.CvPoint;
@@ -55,10 +56,6 @@ public class RectangleDetector {
 
 	/**
 	 * this function draws all the squares into the image
-	 * 
-	 * @param img
-	 * @param rectangles
-	 * @return
 	 */
 	public IplImage drawSquares(IplImage img, CvSeq rectangles) {
 		IplImage cpy = cvCloneImage(img);
@@ -124,23 +121,22 @@ public class RectangleDetector {
 		}
 	}
 
-	private boolean isApprox90Degrees(CvSeq contour) {
-		return getMaxCos(contour) < COSINE_SIZE_LIMIT;
-	}
+private boolean isApprox90Degrees(CvSeq contour) {
+	return isMaxCosValid(contour);
+}
 
-	private double getMaxCos(CvSeq result) {
-		double maxCos = 0.0;
-
-		for (int i = 2; i < 5; i++) {
-			// find minimum angle between joint edges (maximum of cosine)
-			double cos = Math.abs(angle(new CvPoint(cvGetSeqElem(result, i)),
-					new CvPoint(cvGetSeqElem(result, i - 2)),
-					new CvPoint(cvGetSeqElem(result, i - 1))));
-			if (maxCos < cos) {
-				maxCos = cos;
-			}
+private boolean isMaxCosValid(CvSeq contour) {
+	for (int i = 2; i < 5; i++) {
+		double cos = Math.abs(angle(pt(contour, i), pt(contour, i - 2), pt(contour, i - 1)));
+		if (cos > COSINE_SIZE_LIMIT) {
+			return false;
 		}
-		return maxCos;
+	}
+	return true;
+}
+
+	private CvPoint pt(CvSeq contour, int i) {
+		return new CvPoint(cvGetSeqElem(contour, i));
 	}
 
 	private boolean isQuadrangle(CvSeq result) {

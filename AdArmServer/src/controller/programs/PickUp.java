@@ -6,11 +6,11 @@ import model.ProgramsUtils;
 public class PickUp extends Program {
 
 	public static void main(String[] args) {
-		new PickUp().start();
+		new PickUp().run();
 	}
 
 	@Override
-	protected void run() {
+	public void start() {
 		robot.system.setStepDelay(10);
 
 		robot.C0.move(180);

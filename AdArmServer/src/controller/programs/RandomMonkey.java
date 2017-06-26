@@ -11,11 +11,11 @@ public class RandomMonkey extends Program {
 	private static final int MOVES_COUNT = 80;
 
 	public static void main(String[] args) {
-		new RandomMonkey().start();
+		new RandomMonkey().run();
 	}
 
 	@Override
-	protected void run() {
+	public void start() {
 		Servo[] allServos = new Servo[] { robot.C0, robot.C1, robot.C2 };
 
 		Random rnd = new Random();

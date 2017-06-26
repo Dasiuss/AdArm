@@ -5,13 +5,11 @@ import controller.Program;
 public class Positioner extends Program {
 
 	public static void main(String[] args) {
-		new Positioner().start();
+		new Positioner().run();
 	}
 
 	@Override
-	protected void run() {
-
+	public void start() {
 		robot.C0.move(90);
-
 	}
 }

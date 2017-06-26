@@ -63,9 +63,9 @@ public class NumPadKeyListener implements KeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
 			robot.C2.moveRelative(+delta);
 
-			// laser on/off
+			// accessory on/off
 		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
-			robot.laser.toggle();
+			robot.accessory.toggle();
 
 			// save
 		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {

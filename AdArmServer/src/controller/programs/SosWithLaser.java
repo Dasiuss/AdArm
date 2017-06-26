@@ -5,48 +5,48 @@ import controller.Program;
 public class SosWithLaser extends Program {
 
 	public static void main(String[] args) {
-		new SosWithLaser().start();
+		new SosWithLaser().run();
 	}
 
 	@Override
-	protected void run() {
-		robot.laser.on();
+	public void start() {
+		robot.accessory.on();
 		robot.system.wait(100);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(300);
-		robot.laser.on();
+		robot.accessory.on();
 		robot.system.wait(100);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(300);
-		robot.laser.on();
+		robot.accessory.on();
 		robot.system.wait(100);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(1000);
 
-		robot.laser.on();
+		robot.accessory.on();
 		robot.system.wait(300);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(300);
-		robot.laser.on();
+		robot.accessory.on();
 		robot.system.wait(300);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(300);
-		robot.laser.on();
+		robot.accessory.on();
 		robot.system.wait(300);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(1000);
 
-		robot.laser.on();
+		robot.accessory.on();
 		robot.system.wait(100);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(300);
-		robot.laser.on();
+		robot.accessory.on();
 		robot.system.wait(100);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(300);
-		robot.laser.on();
+		robot.accessory.on();
 		robot.system.wait(100);
-		robot.laser.off();
+		robot.accessory.off();
 		robot.system.wait(1000);
 
 	}

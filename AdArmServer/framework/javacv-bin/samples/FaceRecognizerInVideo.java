@@ -24,7 +24,7 @@ public class FaceRecognizerInVideo {
         OpenCVFrameConverter.ToMat converterToMat = new OpenCVFrameConverter.ToMat();
 
         if (args.length < 2) {
-            System.out.println("Two parameters are required to run this program, first parameter is the analized video and second parameter is the trained result for fisher faces.");
+            System.out.println("Two parameters are required to start this program, first parameter is the analized video and second parameter is the trained result for fisher faces.");
         }
 
         String videoFileName = args[0];
@@ -42,7 +42,7 @@ public class FaceRecognizerInVideo {
             grabber = OpenCVFrameGrabber.createDefault(f);
             grabber.start();
         } catch (Exception e) {
-            System.err.println("Failed start the grabber.");
+            System.err.println("Failed run the grabber.");
         }
 
         Frame videoFrame = null;

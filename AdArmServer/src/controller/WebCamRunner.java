@@ -40,7 +40,7 @@ public class WebCamRunner extends Program {
 	private double lockingLevel;
 
 	public static void main(String[] args) {
-		new WebCamRunner().run();
+		new WebCamRunner().start();
 	}
 
 	public WebCamRunner() {
@@ -51,7 +51,7 @@ public class WebCamRunner extends Program {
 	}
 
 	@Override
-	protected void run() {
+	public void start() {
 		OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
 		CvMemStorage storage = cvCreateMemStorage(0);
 		robot.system.attach();
@@ -74,10 +74,10 @@ public class WebCamRunner extends Program {
 					if (!rectangles.isEmpty()) {
 						adjustPosition(rectangles);
 					} else {
-						if (robot.getEffectorLevel() > lockingLevel) {
+						if (robot.getEffectorLevel() > lockingLevel + 5) {
 							targetLocked = false;
 							returnToStartPosition();
-						}else {
+						} else {
 							moveUp();
 							sleep(500);
 						}
@@ -147,12 +147,14 @@ public class WebCamRunner extends Program {
 		lookingClose = false;
 		robot.S1.moveRelative(-20);
 		robot.S2.moveRelative(20);
+		sleep(300);
 	}
 
 	private void moveCloser() {
 		lookingClose = true;
 		robot.S1.moveRelative(20);
 		robot.S2.moveRelative(-20);
+		sleep(300);
 	}
 
 	private boolean isLookingClose() {
@@ -161,10 +163,14 @@ public class WebCamRunner extends Program {
 
 	private void moveRight() {
 		robot.S0.moveRelative(5);
+		sleep(10);
+		robot.S0.moveRelative(1);
 	}
 
 	private void moveLeft() {
 		robot.S0.moveRelative(-5);
+		sleep(10);
+		robot.S0.moveRelative(-1);
 	}
 
 	private void adjustPosition(LinkedList<Rectangle> rectangles) throws InterruptedException {
