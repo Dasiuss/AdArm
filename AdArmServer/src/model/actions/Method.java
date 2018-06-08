@@ -1,7 +1,7 @@
 package model.actions;
 
 public enum Method {
-	delay(0), move(1), moveFast(2), attach(3), detach(4), setIntensity(5), setStepDelay(6), setStepDelayS(7);
+	delay(0), move(1), moveFast(2), attach(3), detach(4), setIntensity(5), setStepDelay(6), setStepDelaySUp(7), setStepDelaySDown(8);
 
 	private final int value;
 

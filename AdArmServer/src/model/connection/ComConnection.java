@@ -8,8 +8,9 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortTimeoutException;
 
+
 public class ComConnection {
-	private final static String DEFAULT_COMNAME = "COM3";
+	private final static String DEFAULT_COMNAME = "COM5";
 	private static final boolean DEBUG = false;
 	SerialPort serialPort;
 
@@ -47,7 +48,7 @@ public class ComConnection {
 		} catch (SerialPortException e) {
 			e.printStackTrace();
 		} catch (SerialPortTimeoutException e) {
-			System.out.println("there is no rdy siggnal");
+			System.out.println("there is no rdy signal");
 			e.printStackTrace();
 		}
 	}
@@ -62,10 +63,11 @@ public class ComConnection {
 				System.out.println("cannot send " + Arrays.toString(data));
 			} else {
 				System.out.print("sent " + Arrays.toString(data) + "... ");
-				System.out.println(serialPort.readString(3, 3000));
+				System.out.println(serialPort.readString(3, 10000));
 			}
 		} catch (SerialPortException e) {
 			e.printStackTrace();
+			System.exit(23);
 		} catch (SerialPortTimeoutException e) {
 			System.out.println("could not get ack for " + Arrays.toString(data));
 			e.printStackTrace();

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="framework (2)">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/framework" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/framework/javacv/platform/src/test/java" />
+      <root url="file://$PROJECT_DIR$/framework/javacv/samples" />
+      <root url="file://$PROJECT_DIR$/framework/javacv/src/main/java" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/framework" recursive="false" />
+  </library>
+</component>

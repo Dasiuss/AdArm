@@ -1,3 +1,4 @@
+#include <Stepper.h>
 #include <EEPROM.h>
 #include <Servo.h>
 
@@ -6,14 +7,20 @@
 int _system = 20, laser = 21, C0 = 0, C1 = 1, C2 = 2, S0 = 10, S1 = 11, S2 = 12;
 int _delay = 0, _move = 1, _moveFast = 2,
     _attach = 3, _detach = 4,
-    _setIntensity = 5, _setStepDelay = 6, _setStepDelayS = 7;
+    _setIntensity = 5, _setStepDelay = 6, _setStepDelaySUp = 7, _setStepDelaySDown = 8;
 
 Servo C[3];
 Servo S[3];
+Stepper stepper = Stepper(48, 7,12,8,13);
+int stepsPerAngle = 42;
+int stepperSpeed = 450;
+
+bool wasAttached = false;
 int lastPosC[3];
 int lastPosS[3];
-long stepDelay = 2000;
-long stepDelayS = 500000;
+long stepDelay = 2000;//micros (max is 16383)
+long stepDelaySUp = 15000;//micros
+long stepDelaySDown = 7000;//micros
 
 int laserPin = 6;
 
@@ -21,7 +28,7 @@ int mapC[3][2] =
 {
   {20, 125},
   {6, 180},
-  {180, -10}
+  {175, -10}
 };
 int mapS[3][2] =
 {
@@ -29,12 +36,17 @@ int mapS[3][2] =
   {0, 180},
   {0, 180}
 };
+int startingPositionsC[3] = { 30, 0, 0 };
+int startingPositionsS[3] = { 90, 90, 70 };
 
 
 void setup() {
   Serial.begin(9600);
 
   pinMode(laserPin, OUTPUT);
+  
+  stepper.setSpeed(stepperSpeed);
+  lastPosS[0] = 90;
 
   Serial.read();
   Serial.print("rdy");
@@ -108,27 +120,38 @@ void handleSystem(int command, int value) {
     C[2].detach();
     S[1].detach();
     S[2].detach();
-    //TODO add stepper S0
+    digitalWrite(7,0);
+    digitalWrite(8,0);
+    digitalWrite(12,0);
+    digitalWrite(13,0);
 
   } else if (command == _attach) {
     //C
     C[0].attach(9);
     C[1].attach(10);
     C[2].attach(11);
-    mCFast(0, 30);
-    mCFast(1, 0);
-    mCFast(2, 0);
+    if(!wasAttached){
+      mCFast(0, 30);
+      mCFast(1, 0);
+      mCFast(2, 0);
+    }
     //S
     S[1].attach(3);
+    if(!wasAttached){
+      mSFast(1, 90);
+    }
     S[2].attach(5);
-    mS(1, 30);
-    mS(2, 90);
+    if(!wasAttached){
+      mSFast(2, 70);
+    }
+    wasAttached=true;
     
-    //TODO add stepper S0
   } else if (command == _setStepDelay ) {
     stepDelay = value;
-  } else if (command == _setStepDelayS ) {
-    stepDelayS = value;
+  } else if (command == _setStepDelaySUp ) {
+    stepDelaySUp = value;
+  } else if (command == _setStepDelaySDown ) {
+    stepDelaySDown = value;
   }
 }
 void handleServoC(int which, int command, int value) {
@@ -147,8 +170,17 @@ void handleServoS(int which, int command, int value) {
   }
 
 }
-void handleStepper(int command, int value) {
-  //TODO
+void handleStepper(int command, int degree) {
+  degree = mapDegreeS(0, degree);
+
+  stepper.step((degree - lastPosS[0]) * stepsPerAngle);
+  
+  digitalWrite(7,0);
+  digitalWrite(8,0);
+  digitalWrite(12,0);
+  digitalWrite(13,0);
+
+  lastPosS[0] = degree;
 }
 
 void mSFast(int which, int degree) {
@@ -163,13 +195,11 @@ void mS(int which, int degree) {
 
   for (int pos = lastPosS[which]; pos < degree; pos++) {
     S[which].write(pos);
-    delay(5);
-//    delayMicroseconds(stepDelayS);
+    delayMicroseconds(stepDelaySUp);
   }
   for (int pos = lastPosS[which]; pos > degree; pos--) {
     S[which].write(pos);
-    delay(20);
-//    delayMicroseconds(stepDelayS);
+    delayMicroseconds(stepDelaySDown);
   }
   lastPosS[which] = degree;
 }
