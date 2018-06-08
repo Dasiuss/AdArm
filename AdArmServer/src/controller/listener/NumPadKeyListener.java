@@ -1,9 +1,11 @@
 package controller.listener;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import controller.GuiController;
+import model.ProgramsUtils;
 import model.elements.Robot;
 
 public class NumPadKeyListener implements KeyListener {
@@ -29,9 +31,17 @@ public class NumPadKeyListener implements KeyListener {
 
 		// grasper arms
 		if (e.getKeyCode() == KeyEvent.VK_NUMPAD0) {
-			robot.C0.moveRelative(-delta);
+			if (isCtrlPressed(e)) {
+				robot.C0.moveFast(0);
+			} else {
+				robot.C0.moveRelative(-delta);
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_DECIMAL) {
-			robot.C0.moveRelative(+delta);
+			if (isCtrlPressed(e)) {
+				robot.C0.moveFast(90);
+			} else {
+				robot.C0.moveRelative(+delta);
+			}
 
 			// base rotation
 		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
@@ -53,15 +63,31 @@ public class NumPadKeyListener implements KeyListener {
 
 			// grasper rotation
 		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
-			robot.C1.moveRelative(-delta);
+			if (isCtrlPressed(e)) {
+				robot.C1.moveFast(0);
+			} else {
+				robot.C1.moveRelative(-delta);
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
-			robot.C1.moveRelative(+delta);
+			if (isCtrlPressed(e)) {
+				robot.C1.moveFast(90);
+			} else {
+				robot.C1.moveRelative(+delta);
+			}
 
 			// grasper up/down
 		} else if (e.getKeyCode() == KeyEvent.VK_SUBTRACT) {
-			robot.C2.moveRelative(-delta);
+			if (isCtrlPressed(e)) {
+				robot.C2.moveFast(0);
+			} else {
+				robot.C2.moveRelative(-delta);
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_ADD) {
-			robot.C2.moveRelative(+delta);
+			if (isCtrlPressed(e)) {
+				robot.C2.moveFast(90);
+			} else {
+				robot.C2.moveRelative(+delta);
+			}
 
 			// accessory on/off
 		} else if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
@@ -69,14 +95,33 @@ public class NumPadKeyListener implements KeyListener {
 
 			// save
 		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			controller.save();
+			if (isCtrlPressed(e)) {
+				controller.save();
+			} else {
+				returnToStartPosition();
+			}
+		} else if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+			//do nothing
 
 			// else - unknown
 		} else {
 			System.out.println(e);
 		}
+
 		callback.run();
 	}
+
+	private void returnToStartPosition() {
+		ProgramsUtils.startPosition(robot);
+		robot.C0.moveFast(100);
+		robot.S1.moveFast(80);
+		robot.S2.moveFast(90);
+	}
+
+	private boolean isCtrlPressed(KeyEvent e) {
+		return e.getModifiers() == InputEvent.CTRL_MASK;
+	}
+
 
 	@Override
 	public void keyReleased(KeyEvent e) {

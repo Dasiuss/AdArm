@@ -21,14 +21,14 @@ import static org.bytedeco.javacpp.opencv_core.cvClearMemStorage;
 import static org.bytedeco.javacpp.opencv_core.cvCreateMemStorage;
 import static org.bytedeco.javacpp.opencv_core.cvReleaseImage;
 
-public class WebCamView extends Program {
+public class WebCamView extends Thread{
 
 	private RectangleDetector rectangleDetector = new RectangleDetector();
 	private CanvasFrame canvas;
 	private WebCam cam;
 
 	public static void main(String[] args) {
-		new WebCamView().start();
+		new WebCamView().run();
 	}
 
 	public WebCamView() {
@@ -39,7 +39,7 @@ public class WebCamView extends Program {
 	}
 
 	@Override
-	public void start() {
+	public void run() {
 		OpenCVFrameConverter.ToIplImage converter = new OpenCVFrameConverter.ToIplImage();
 		CvMemStorage storage = cvCreateMemStorage(0);
 		while (true) {

@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import controller.GuiController;
+import controller.WebCamView;
 
 public class Gui {
 
-	private JFrame frame;
 	private GuiController guiController;
 	private final JLabel sValuesLabel;
 	private final JLabel cValuesLabel;
@@ -19,16 +19,8 @@ public class Gui {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Gui window = new Gui();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(Gui::new);
+		EventQueue.invokeLater(() -> new WebCamView().start());
 	}
 
 	/**
@@ -36,7 +28,7 @@ public class Gui {
 	 */
 	public Gui() {
 		guiController = new GuiController();
-		frame = new JFrame();
+		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		JButton btnAttach = new JButton("Attach");
@@ -72,7 +64,7 @@ public class Gui {
 		frame.add(heightLabel);
 
 		frame.pack();
-		frame.setBounds(600, 300, 100, 330);
+		frame.setBounds(900, 300, 100, 330);
 		frame.setVisible(true);
 	}
 
